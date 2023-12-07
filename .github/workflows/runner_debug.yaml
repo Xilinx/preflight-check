@@ -1,0 +1,12 @@
+name: debugging
+
+on:    
+  workflow_dispatch:  
+
+jobs:
+  debug:
+    name: print env
+    runs-on: xcolinlocbld39-1
+    steps:
+      - name: print env
+        run: printenv
