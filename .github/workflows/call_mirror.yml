@@ -1,4 +1,4 @@
-name: call-repo-mirror
+name: call-repo-mirror-worklow
 
 on:
   pull_request_target:
