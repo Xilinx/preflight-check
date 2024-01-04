@@ -1,7 +1,5 @@
 ==============
-==============
 Xilinx Runtime
-==============
 ==============
 
 .. image:: https://travis-ci.org/Xilinx/XRT.svg?branch=master
