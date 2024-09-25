@@ -17,7 +17,7 @@ jobs:
       - name: Checkout PR       
         uses: actions/checkout@v3     
         with:     
-          ref: '2021.1'    
+          # ref: '2021.1'    
           fetch-depth: 0    
           path: ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}      
           submodules: recursive     
@@ -27,13 +27,13 @@ jobs:
           echo "Creating a sample Dockerfile"    
           mkdir -p ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiles    
           cat <<EOF > ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiles/Dockerfile  
-          ARG BASE_IMAGE    
-          FROM \${BASE_IMAGE}    
+ARG BASE_IMAGE    
+FROM ${BASE_IMAGE}    
     
-          ARG TEST_ARG    
-          RUN echo "Test argument: \${TEST_ARG}"    
-          RUN echo "Base image: \${BASE_IMAGE}"    
-          EOF    
+ARG TEST_ARG    
+RUN echo "Test argument: ${TEST_ARG}"    
+RUN echo "Base image: ${BASE_IMAGE}"    
+EOF  
   
       - name: Build Docker image    
         run: |    
