@@ -1,48 +1,47 @@
-name: test build arg
+name: Test Build Arg  
   
-on:  
-  workflow_dispatch:  
+on:    
+  workflow_dispatch:    
   
-jobs:  
-  build:  
-    runs-on: [self-hosted, Ubuntu-22.04]      
+jobs:    
+  build:    
+    runs-on: [self-hosted, Ubuntu-22.04]        
   
-    steps:  
+    steps:    
+      - name: Set env variables        
+        run: |        
+          echo "Setting environment variables..."          
+          echo "XRT_VERSION_PATCH=$(($GITHUB_RUN_NUMBER+717))" >> $GITHUB_ENV        
+          echo "PATH=/usr/bin:$PATH" >> $GITHUB_ENV         
   
-      - name: Set env variables      
-        run: |      
-          echo "Setting environment variables..."        
-          echo "XRT_VERSION_PATCH=$(($GITHUB_RUN_NUMBER+717))" >> $GITHUB_ENV      
-          echo "PATH=/usr/bin:$PATH" >> $GITHUB_ENV       
-      
-      - name: Checkout PR     
-        uses: actions/checkout@v3   
-        with:   
-          ref: '2021.1'  
-          fetch-depth: 0  
-          path: ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}    
-          submodules: recursive   
+      - name: Checkout PR       
+        uses: actions/checkout@v3     
+        with:     
+          ref: '2021.1'    
+          fetch-depth: 0    
+          path: ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}      
+          submodules: recursive     
   
-      - name: Set up Docker Build  
-        run: |  
-          echo "Creating a sample Dockerfile"  
-          mkdir -p ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiless/Dockerfile  
-          cat <<EOF > ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiless/Dockerfile
-          ARG BASE_IMAGE  
-          FROM \${BASE_IMAGE}  
+      - name: Set up Docker Build    
+        run: |    
+          echo "Creating a sample Dockerfile"    
+          mkdir -p ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiles    
+          cat <<EOF > ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiles/Dockerfile  
+          ARG BASE_IMAGE    
+          FROM \${BASE_IMAGE}    
+    
+          ARG TEST_ARG    
+          RUN echo "Test argument: \${TEST_ARG}"    
+          RUN echo "Base image: \${BASE_IMAGE}"    
+          EOF    
   
-          ARG TEST_ARG  
-          RUN echo "Test argument: \${TEST_ARG}"  
-          RUN echo "Base image: \${BASE_IMAGE}"  
-          EOF  
+      - name: Build Docker image    
+        run: |    
+          base_image="ubuntu:20.04"  # Change this to test different base images    
+          echo "Building Docker image with base image: $base_image"    
+          docker build --build-arg BASE_IMAGE="$base_image" --build-arg TEST_ARG="HelloWorld" -t test_image -f ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiles/Dockerfile ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiles    
   
-      - name: Build Docker image  
-        run: |  
-          base_image="ubuntu:20.04"  # Change this to test different base images  
-          echo "Building Docker image with base image: $base_image"  
-          docker build --build-arg BASE_IMAGE="$base_image" --build-arg TEST_ARG="HelloWorld" -t test_image -f dockerfiles/Dockerfile/Dockerfile dockerfiles/Dockerfile  
-  
-      - name: Run Docker image  
-        run: |  
-          echo "Running Docker image to check output"  
-          docker run --rm test_image
+      - name: Run Docker image    
+        run: |    
+          echo "Running Docker image to check output"    
+          docker run --rm test_image  
