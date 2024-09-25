@@ -8,14 +8,26 @@ jobs:
     runs-on: [self-hosted, Ubuntu-22.04]      
   
     steps:  
-      - name: Checkout code  
-        uses: actions/checkout@v2  
+  
+      - name: Set env variables      
+        run: |      
+          echo "Setting environment variables..."        
+          echo "XRT_VERSION_PATCH=$(($GITHUB_RUN_NUMBER+717))" >> $GITHUB_ENV      
+          echo "PATH=/usr/bin:$PATH" >> $GITHUB_ENV       
+      
+      - name: Checkout PR     
+        uses: actions/checkout@v3   
+        with:   
+          ref: '2021.1'  
+          fetch-depth: 0  
+          path: ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}    
+          submodules: recursive   
   
       - name: Set up Docker Build  
         run: |  
           echo "Creating a sample Dockerfile"  
-          mkdir -p dockerfiless/Dockerfile  
-          cat <<EOF > dockerfiles/Dockerfile/Dockerfile  
+          mkdir -p ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiless/Dockerfile  
+          cat <<EOF > ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiless/Dockerfile
           ARG BASE_IMAGE  
           FROM \${BASE_IMAGE}  
   
