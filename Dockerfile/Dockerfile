@@ -13,21 +13,21 @@
 
 
 #ARG BASE_IMAGE 
-ARG PACKAGE_FILE
+
 ARG BASE_IMAGE 
-
 RUN echo "Using base image: ${BASE_IMAGE}"  # Debug statement  
-RUN echo "Using package file: ${PACKAGE_FILE}"  # Debug statement
-
 FROM ${BASE_IMAGE} 
 
-  
-# ARG PACKAGE_FILE      
+
+ARG PACKAGE_FILE
+RUN echo "Using package file: ${PACKAGE_FILE}"  # Debug statement
+       
   
 # Copy the package into the image      
 COPY ${PACKAGE_FILE} /tmp/      
   
-# Install the package based on the package type      
+# Install the package based on the package type  
+ARG BASE_IMAGE
 RUN if [ "${BASE_IMAGE#*:}" = "centos" ] || [ "${BASE_IMAGE#*:}" = "amazonlinux" ]; then \      
       yum install -y epel-release && \      
       yum install -y dnf-plugins-core wget && \      
