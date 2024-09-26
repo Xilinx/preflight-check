@@ -32,11 +32,17 @@ ARG BASE_IMAGE
 RUN if [[ "${BASE_IMAGE}" == centos* ]] || [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \ 
       sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* && \    
       sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \ 
-      yum install -y epel-release && \      
-      yum install -y dnf-plugins-core wget && \      
-      yum clean all && \      
-      yum localinstall -y /tmp/${PACKAGE_FILE} && \      
-      rm -f /tmp/${PACKAGE_FILE} && \      
+      # yum install -y epel-release && \      
+      # yum install -y dnf-plugins-core wget && \      
+      # yum clean all && \      
+      # yum localinstall -y /tmp/${PACKAGE_FILE} && \      
+      # rm -f /tmp/${PACKAGE_FILE} && \      
+      yum install -y epel-release && \    
+      yum install -y dnf-plugins-core wget && \    
+      yum config-manager --set-enabled powertools && \    
+      yum clean all && \    
+      yum install -y /tmp/${PACKAGE_FILE} && \    
+      rm -f /tmp/${PACKAGE_FILE} 
       rpm -qa | grep xrt; \      
     # elif [ "${BASE_IMAGE#*:}" = "ubuntu" ]; then \      
     elif [[ "${BASE_IMAGE}" == ubuntu* ]]; then \  
