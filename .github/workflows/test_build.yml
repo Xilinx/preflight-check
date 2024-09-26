@@ -23,7 +23,7 @@ jobs:
   
       - name: Build Docker image  
         run: |  
-          package_files= "123"
+          package_files="Hello"
           base_image="HelloWorld"  
           echo "Using base image: $base_image"  
           #docker build --build-arg BASE_IMAGE="$base_image" -t hello-world-image ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile  
