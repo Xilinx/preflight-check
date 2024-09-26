@@ -74,24 +74,24 @@ jobs:
     # needs: [build]          
     runs-on: [self-hosted, Ubuntu-22.04]          
     steps:      
-      # - name: Set env variables          
-      #   run: |          
-      #     echo "Setting environment variables..."            
-      #     echo "XRT_VERSION_PATCH=$(($GITHUB_RUN_NUMBER+717))" >> $GITHUB_ENV          
-      #     echo "PATH=/usr/bin:$PATH" >> $GITHUB_ENV     
+      - name: Set env variables          
+        run: |          
+          echo "Setting environment variables..."            
+          echo "XRT_VERSION_PATCH=$(($GITHUB_RUN_NUMBER+717))" >> $GITHUB_ENV          
+          echo "PATH=/usr/bin:$PATH" >> $GITHUB_ENV     
     
-      # - name: Checkout PR           
-      #   uses: actions/checkout@v3         
-      #   with:         
-      #     fetch-depth: 0        
-      #     path: ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}          
-      #     submodules: recursive      
+      - name: Checkout PR           
+        uses: actions/checkout@v3         
+        with:         
+          fetch-depth: 0        
+          path: ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}          
+          submodules: recursive      
     
-      # - name: List contents of Repo  
-      #   run: |    
-      #     echo "Contents of Repo directory:"    
-      #     ls -al ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}  
-      #   shell: bash   
+      - name: List contents of Repo  
+        run: |    
+          echo "Contents of Repo directory:"    
+          ls -al ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}  
+        shell: bash   
     
       # - name: Checkout private repository          
       #   uses: actions/checkout@v3       
