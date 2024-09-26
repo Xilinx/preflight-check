@@ -163,7 +163,9 @@ jobs:
               elif [[ "$package_file" == *"8.1.1911"* ]]; then          
                   base_image="centos:8"          
               elif [[ "$package_file" == *"amzn2"* ]]; then          
-                  base_image="amazonlinux:2"          
+                  base_image="amazonlinux:2"     
+              elif [[ "$package_file" == *"7.8.2003"* ]]; then          
+                  base_image="centos:8" 
               else          
                   echo "No matching base image found for $package_file"          
                   exit 1          
