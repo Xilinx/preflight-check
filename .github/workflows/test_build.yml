@@ -27,7 +27,7 @@ jobs:
           base_image="HelloWorld"  
           echo "Using base image: $base_image"  
           #docker build --build-arg BASE_IMAGE="$base_image" -t hello-world-image ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile  
-          docker build --build-arg PACKAGE_FILE="$package_files" --build-arg BASE_IMAGE="$base_image"  -t hello-world-image ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile
+          docker build --build-arg PACKAGE_FILE="$package_files" -t hello-world-image ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile
   
       - name: Run Docker container  
         run: |  
