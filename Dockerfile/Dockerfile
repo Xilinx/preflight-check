@@ -43,7 +43,7 @@ RUN if [[ "${BASE_IMAGE}" == centos* ]] || [[ "${BASE_IMAGE}" == amazonlinux* ]]
       yum clean all && \    
       yum install -y /tmp/${PACKAGE_FILE} && \    
       rm -f /tmp/${PACKAGE_FILE} 
-      rpm -qa | grep xrt; \      
+      # rpm -qa | grep xrt; \      
     # elif [ "${BASE_IMAGE#*:}" = "ubuntu" ]; then \      
     elif [[ "${BASE_IMAGE}" == ubuntu* ]]; then \  
       apt-get update && \      
