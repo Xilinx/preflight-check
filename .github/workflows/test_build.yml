@@ -8,8 +8,18 @@ jobs:
     runs-on: [self-hosted, Ubuntu-22.04]        
   
     steps:  
-      - name: Checkout repository  
+      - name: Set env variables  
+        run: |  
+          echo "Setting environment variables..."  
+          echo "XRT_VERSION_PATCH=$(($GITHUB_RUN_NUMBER+717))" >> $GITHUB_ENV  
+          echo "PATH=/usr/bin:$PATH" >> $GITHUB_ENV  
+  
+      - name: Checkout PR  
         uses: actions/checkout@v3  
+        with:  
+          fetch-depth: 0  
+          path: ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}  
+          submodules: recursive  
   
       - name: Build Docker image  
         run: |  
@@ -19,4 +29,4 @@ jobs:
   
       - name: Run Docker container  
         run: |  
-          docker run hello-world-image 
+          docker run hello-world-image
