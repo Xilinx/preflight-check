@@ -30,6 +30,8 @@ COPY ${PACKAGE_FILE} /tmp/
 ARG BASE_IMAGE
 # RUN if [ "${BASE_IMAGE#*:}" = "centos" ] || [ "${BASE_IMAGE#*:}" = "amazonlinux" ]; then \    
 RUN if [[ "${BASE_IMAGE}" == centos* ]] || [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \ 
+      sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* && \    
+      sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \ 
       yum install -y epel-release && \      
       yum install -y dnf-plugins-core wget && \      
       yum clean all && \      
