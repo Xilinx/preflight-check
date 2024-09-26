@@ -1,5 +1,6 @@
-ARG BASE_IMAGE      
-FROM ${BASE_IMAGE}      
+#ARG BASE_IMAGE 
+FROM ${BASE_IMAGE}   
+ARG BASE_IMAGE 
   
 RUN echo "Using base image: ${BASE_IMAGE}"  # Debug statement  
   
