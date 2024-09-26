@@ -172,7 +172,7 @@ jobs:
               fi      
             
               echo "Using base image: $base_image"          
-              docker build --build-arg PACKAGE_FILE=$(basename "$package_file") --build-arg BASE_IMAGE="$base_image" -t "xrt_image:$image_tag" -f "$GITHUB_WORKSPACE/${{ env.XRT_VERSION_PATCH }}/Dockerfile/Dockerfile" "$GITHUB_WORKSPACE/${{ env.XRT_VERSION_PATCH }}/Dockerfile"          
+              docker build --build-arg BASE_IMAGE="$base_image" --build-arg PACKAGE_FILE=$(basename "$package_file") -t "xrt_image:$image_tag" -f "$GITHUB_WORKSPACE/${{ env.XRT_VERSION_PATCH }}/Dockerfile/Dockerfile" "$GITHUB_WORKSPACE/${{ env.XRT_VERSION_PATCH }}/Dockerfile"          
           done    
     
       - name: Authenticate with Harbor      
