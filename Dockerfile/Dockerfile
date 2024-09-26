@@ -1,7 +1,8 @@
 FROM ubuntu:22.04  
   
 ARG BASE_IMAGE  
-  
+
+RUN echo "package file variable: ${PACKAGE_FILE}" > /message.txt  
 RUN echo "Base image variable: ${BASE_IMAGE}" > /message.txt  
   
 CMD ["cat", "/message.txt"]  
