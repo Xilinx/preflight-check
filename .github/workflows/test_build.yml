@@ -7,41 +7,16 @@ jobs:
   build:    
     runs-on: [self-hosted, Ubuntu-22.04]        
   
-    steps:    
-      - name: Set env variables        
-        run: |        
-          echo "Setting environment variables..."          
-          echo "XRT_VERSION_PATCH=$(($GITHUB_RUN_NUMBER+717))" >> $GITHUB_ENV        
-          echo "PATH=/usr/bin:$PATH" >> $GITHUB_ENV         
+    steps:  
+      - name: Checkout repository  
+        uses: actions/checkout@v3  
   
-      - name: Checkout PR       
-        uses: actions/checkout@v3     
-        with:     
-          # ref: '2021.1'    
-          fetch-depth: 0    
-          path: ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}      
-          submodules: recursive     
+      - name: Build Docker image  
+        run: |  
+          base_image="HelloWorld"  
+          echo "Using base image: $base_image"  
+          docker build --build-arg BASE_IMAGE="$base_image" -t hello-world-image .  
   
-      - name: Set up Docker Build    
-        run: |    
-          echo "Creating a sample Dockerfile"    
-          mkdir -p ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiles    
-          cat <<EOF > ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiles/Dockerfile  
-ARG BASE_IMAGE    
-FROM ${BASE_IMAGE}    
-    
-ARG TEST_ARG    
-RUN echo "Test argument: ${TEST_ARG}"    
-RUN echo "Base image: ${BASE_IMAGE}"    
-EOF  
-  
-      - name: Build Docker image    
-        run: |    
-          base_image="ubuntu:20.04"  # Change this to test different base images    
-          echo "Building Docker image with base image: $base_image"    
-          docker build --build-arg BASE_IMAGE="$base_image" --build-arg TEST_ARG="HelloWorld" -t test_image -f ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiles/Dockerfile ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/dockerfiles    
-  
-      - name: Run Docker image    
-        run: |    
-          echo "Running Docker image to check output"    
-          docker run --rm test_image  
+      - name: Run Docker container  
+        run: |  
+          docker run hello-world-image 
