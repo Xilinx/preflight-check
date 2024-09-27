@@ -40,6 +40,7 @@ RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \
       yum install -y tar && \
       yum install -y /tmp/${PACKAGE_FILE} && \  
       rm -f /tmp/${PACKAGE_FILE}; \  
+      rpm -qa | grep xrt; \
     elif [[ "${BASE_IMAGE}" == centos* ]]; then \  
       sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* && \  
       sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \  
@@ -49,10 +50,12 @@ RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \
       yum clean all && \  
       yum install -y /tmp/${PACKAGE_FILE} && \  
       rm -f /tmp/${PACKAGE_FILE}; \  
+      rpm -qa | grep xrt; \
     # elif [[ "${BASE_IMAGE}" == ubuntu* ]]; then \  
     elif echo "${BASE_IMAGE}" | grep -q "ubuntu"; then \
       apt-get update && \  
-      apt-get install -y wget && \  
+      # apt-get install -y wget && \  
+      apt-get install -y wget ocl-icd-libopencl1 lsb-release dkms udev python3 ocl-icd-opencl-dev uuid-dev libboost-filesystem1.74.0 libboost-program-options1.74.0 libprotobuf23 libyaml-0-2 && \    
       dpkg -i /tmp/${PACKAGE_FILE} || apt-get install -f -y && \  
       rm -f /tmp/${PACKAGE_FILE} && \  
       dpkg -l | grep xrt; \  
