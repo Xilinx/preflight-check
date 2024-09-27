@@ -32,11 +32,8 @@ ARG BASE_IMAGE
 RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \  
       yum update -y && \
       yum install -y wget gnupg2 && \
-      wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-      rpm -ivh epel-release-latest-7.noarch.rpm && \
-      yum --enablerepo=epel install -y ocl-icd && \
-      yum --enablerepo=epel install -y ocl-icd-devel && \
-      # yum install -y ocl-icd ocl-icd-devel && \
+      amazon-linux-extras install epel -y  
+      yum install -y ocl-icd ocl-icd-devel && \
       # yum install -y opencl-headers && \  
       # yum clean all && \  
       # yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
