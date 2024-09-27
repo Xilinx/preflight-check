@@ -49,7 +49,8 @@ RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \
       yum clean all && \  
       yum install -y /tmp/${PACKAGE_FILE} && \  
       rm -f /tmp/${PACKAGE_FILE}; \  
-    elif [[ "${BASE_IMAGE}" == ubuntu* ]]; then \  
+    # elif [[ "${BASE_IMAGE}" == ubuntu* ]]; then \  
+    elif [ "${BASE_IMAGE}" = "ubuntu"* ]; then \  
       apt-get update && \  
       apt-get install -y wget && \  
       dpkg -i /tmp/${PACKAGE_FILE} || apt-get install -f -y && \  
