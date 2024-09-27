@@ -32,7 +32,7 @@ ARG BASE_IMAGE
 RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \  
       yum update -y && \
       yum install -y wget gnupg2 && \
-      amazon-linux-extras install epel -y  
+      amazon-linux-extras install epel -y && \
       yum install -y ocl-icd ocl-icd-devel && \
       # yum install -y opencl-headers && \  
       # yum clean all && \  
