@@ -30,10 +30,11 @@ COPY ${PACKAGE_FILE} /tmp/
 ARG BASE_IMAGE
 # RUN if [ "${BASE_IMAGE#*:}" = "centos" ] || [ "${BASE_IMAGE#*:}" = "amazonlinux" ]; then \    
 RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \  
+      yum update; yum install -y wget && \
       yum install -y epel-release && \  
-      # yum install -y dnf-plugins-core wget && \  
+      yum install -y dnf-plugins-core && \ 
+      yum config-manager --set-enabled powertools && \
       # yum clean all && \  
-      yum update; yum install -y wget && \ 
       # yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
       yum install -y tar && \
       yum install -y /tmp/${PACKAGE_FILE} && \  
