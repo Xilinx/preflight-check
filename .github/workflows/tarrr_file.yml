@@ -162,8 +162,8 @@ jobs:
                   base_image="ubuntu:22.04"          
               elif [[ "$package_file" == *"8.1.1911"* ]]; then          
                   base_image="centos:8"          
-              # elif [[ "$package_file" == *"amzn2"* ]]; then          
-              #     base_image="amazonlinux:2"     
+              elif [[ "$package_file" == *"amzn2"* ]]; then          
+                  base_image="amazonlinux:2"     
               # elif [[ "$package_file" == *"7.8.2003"* ]]; then          
               #     base_image="centos:8" 
               else          
