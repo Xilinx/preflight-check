@@ -30,6 +30,7 @@ COPY ${PACKAGE_FILE} /tmp/
 ARG BASE_IMAGE
 # RUN if [ "${BASE_IMAGE#*:}" = "centos" ] || [ "${BASE_IMAGE#*:}" = "amazonlinux" ]; then \    
 RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \  
+      yum install -y epel-release && \ 
       yum update; yum install -y wget && \
       yum install -y ocl-icd ocl-icd-devel && \
       yum install -y opencl-headers && \  
