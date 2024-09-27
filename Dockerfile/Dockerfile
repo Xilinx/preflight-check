@@ -29,9 +29,7 @@ COPY ${PACKAGE_FILE} /tmp/
 # Install the package based on the package type  
 ARG BASE_IMAGE
 # RUN if [ "${BASE_IMAGE#*:}" = "centos" ] || [ "${BASE_IMAGE#*:}" = "amazonlinux" ]; then \    
-RUN /bin/bash -c ' \
-# RUN if echo "${BASE_IMAGE}" | grep -q "amazonlinux"; then \   
-    if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \ 
+RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \  
       yum update -y && \
       yum install -y wget gnupg2 && \
       amazon-linux-extras install epel -y && \
@@ -42,8 +40,7 @@ RUN /bin/bash -c ' \
       yum install -y tar && \
       yum install -y /tmp/${PACKAGE_FILE} && \  
       rm -f /tmp/${PACKAGE_FILE}; \  
-      rpm -qa | grep xrt || { echo "xrt package not found"; exit 1; }; \ 
-    elif echo "${BASE_IMAGE}" | grep -q "centos"; then \    
+    elif [[ "${BASE_IMAGE}" == centos* ]]; then \  
       sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* && \  
       sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \  
       yum install -y epel-release && \  
@@ -52,15 +49,12 @@ RUN /bin/bash -c ' \
       yum clean all && \  
       yum install -y /tmp/${PACKAGE_FILE} && \  
       rm -f /tmp/${PACKAGE_FILE}; \  
-      rpm -qa | grep xrt || { echo "xrt package not found"; exit 1; }; \ 
-    # elif [[ "${BASE_IMAGE}" == ubuntu* ]]; then \  
-    elif echo "${BASE_IMAGE}" | grep -q "ubuntu"; then \
+    elif echo "${BASE_IMAGE}" | grep -q "ubuntu"; then \ 
       apt-get update && \  
-      # apt-get install -y wget && \  
-      apt-get install -y wget ocl-icd-libopencl1 lsb-release dkms udev python3 ocl-icd-opencl-dev uuid-dev libboost-filesystem1.65.1 libboost-program-options1.65.1 libprotobuf10 libyaml-0-2 && \ 
+      apt-get install -y wget && \  
       dpkg -i /tmp/${PACKAGE_FILE} || apt-get install -f -y && \  
       rm -f /tmp/${PACKAGE_FILE} && \  
-      dpkg -l | grep xrt || { echo "xrt package not found"; exit 1; }; \ 
+      dpkg -l | grep xrt; \  
     else \  
       echo "Unsupported base image: ${BASE_IMAGE}"; \  
       exit 1; \  
