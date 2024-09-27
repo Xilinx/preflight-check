@@ -30,9 +30,8 @@ COPY ${PACKAGE_FILE} /tmp/
 ARG BASE_IMAGE
 # RUN if [ "${BASE_IMAGE#*:}" = "centos" ] || [ "${BASE_IMAGE#*:}" = "amazonlinux" ]; then \    
 RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \  
-      yum install -y epel-release && \ 
-      yum config-manager --set-enabled powertools && \ 
-      yum update; yum install -y wget && \
+      yum update -y && \
+      yum install -y wget gnupg2 && \
       wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
       rpm -ivh epel-release-latest-7.noarch.rpm && \
       yum --enablerepo=epel install -y ocl-icd && \
