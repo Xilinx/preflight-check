@@ -33,8 +33,12 @@ RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \
       yum install -y epel-release && \ 
       yum config-manager --set-enabled powertools && \ 
       yum update; yum install -y wget && \
-      yum install -y ocl-icd ocl-icd-devel && \
-      yum install -y opencl-headers && \  
+      wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
+      rpm -ivh epel-release-latest-7.noarch.rpm && \
+      yum --enablerepo=epel install -y ocl-icd && \
+      yum --enablerepo=epel install -y ocl-icd-devel && \
+      # yum install -y ocl-icd ocl-icd-devel && \
+      # yum install -y opencl-headers && \  
       # yum clean all && \  
       # yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
       yum install -y tar && \
