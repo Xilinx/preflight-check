@@ -49,12 +49,12 @@ RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \
       yum clean all && \  
       yum install -y /tmp/${PACKAGE_FILE} && \  
       rm -f /tmp/${PACKAGE_FILE}; \  
-    elif echo "${BASE_IMAGE}" | grep -q "ubuntu"; then \ 
-      apt-get update && \  
-      apt-get install -y wget && \  
-      dpkg -i /tmp/${PACKAGE_FILE} || apt-get install -f -y && \  
-      rm -f /tmp/${PACKAGE_FILE} && \  
-      dpkg -l | grep xrt; \  
+    elif echo "${BASE_IMAGE}" | grep -q "ubuntu"; then \   
+      bash -c 'apt-get update && \    
+      apt-get install -y wget && \    
+      dpkg -i /tmp/${PACKAGE_FILE} || apt-get install -f -y && \    
+      rm -f /tmp/${PACKAGE_FILE} && \    
+      dpkg -l | grep xrt'; \   
     else \  
       echo "Unsupported base image: ${BASE_IMAGE}"; \  
       exit 1; \  
