@@ -30,9 +30,12 @@ COPY ${PACKAGE_FILE} /tmp/
 ARG BASE_IMAGE
 # RUN if [ "${BASE_IMAGE#*:}" = "centos" ] || [ "${BASE_IMAGE#*:}" = "amazonlinux" ]; then \    
 RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \  
-      yum install -y epel-release && \  
-      yum install -y dnf-plugins-core wget && \  
-      yum clean all && \  
+      # yum install -y epel-release && \  
+      # yum install -y dnf-plugins-core wget && \  
+      # yum clean all && \  
+      yum update; yum install -y wget && \ 
+      yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
+      yum install -y tar && \
       yum install -y /tmp/${PACKAGE_FILE} && \  
       rm -f /tmp/${PACKAGE_FILE}; \  
     elif [[ "${BASE_IMAGE}" == centos* ]]; then \  
