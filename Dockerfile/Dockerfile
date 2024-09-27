@@ -29,7 +29,7 @@ COPY ${PACKAGE_FILE} /tmp/
 # Install the package based on the package type  
 ARG BASE_IMAGE
 # RUN if [ "${BASE_IMAGE#*:}" = "centos" ] || [ "${BASE_IMAGE#*:}" = "amazonlinux" ]; then \    
-RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \  
+RUN if echo "${BASE_IMAGE}" | grep -q "amazonlinux"; then \   
       yum update -y && \
       yum install -y wget gnupg2 && \
       amazon-linux-extras install epel -y && \
@@ -41,7 +41,7 @@ RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \
       yum install -y /tmp/${PACKAGE_FILE} && \  
       rm -f /tmp/${PACKAGE_FILE}; \  
       rpm -qa | grep xrt || { echo "xrt package not found"; exit 1; }; \ 
-    elif [[ "${BASE_IMAGE}" == centos* ]]; then \  
+    elif echo "${BASE_IMAGE}" | grep -q "centos"; then \    
       sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* && \  
       sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \  
       yum install -y epel-release && \  
