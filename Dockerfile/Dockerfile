@@ -23,7 +23,9 @@ ARG PACKAGE_FILE
 RUN echo "Using package file: ${PACKAGE_FILE}"  # Debug statement  
 
   
-COPY ${PACKAGE_FILE} /tmp/        
+COPY ${PACKAGE_FILE} /tmp/     
+COPY xcr_* /tmp/  
+COPY xrm_* /tmp/ 
   
 ARG INSTALL_COMMANDS  
 RUN eval "${INSTALL_COMMANDS}"  
