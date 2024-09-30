@@ -132,12 +132,21 @@ jobs:
           done      
     
 
-          # Copy all XCR and XRM packages  
+          # Copy only the required XCR and XRM packages  
           base_path="${{ secrets.APP_CONFIG4 }}"  
-          cp $base_path/XCR/master/202220.1.1.27/packages/* ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-          cp $base_path/XRM/master/202220.1.5.103/packages/* ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-          echo "Copied all XCR and XRM packages"  
-        shell: bash       
+          cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_18.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_20.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_22.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_7.9.2009-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_2-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+    
+          cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_18.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_20.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_22.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_7.8.2003-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_2-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          echo "Copied required XCR and XRM packages"  
+        shell: bash    
         
       - name: List contents of Dockerfile directory      
         run: |      
