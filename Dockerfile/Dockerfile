@@ -49,16 +49,14 @@ RUN if [[ "${BASE_IMAGE}" == amazonlinux* ]]; then \
       yum clean all && \  
       yum install -y /tmp/${PACKAGE_FILE} && \  
       rm -f /tmp/${PACKAGE_FILE}; \  
-    elif echo "${BASE_IMAGE}" | grep -q "ubuntu"; then \  
-      export DEBIAN_FRONTEND=noninteractive && \  
-      apt-get update && \  
-      apt-get install -y wget systemd && \  
-      apt-get install -y linux-headers-$(uname -r) || apt-get install -y linux-headers-generic && \  
+    elif echo "${BASE_IMAGE}" | grep -q "ubuntu"; then \   
+      bash -c 'apt-get update && \    
+      apt-get install -y wget && \   
+      apt-get install -y wget systemd linux-headers-$(uname -r) || apt-get install -y linux-headers-generic && \  
       apt-get install -y ocl-icd-libopencl1 lsb-release dkms udev python3 ocl-icd-opencl-dev uuid-dev libboost-filesystem1.65.1 libboost-program-options1.65.1 libboost-system1.65.1 libprotobuf10 libyaml-0-2 && \  
-      dpkg -i /tmp/${PACKAGE_FILE} || apt-get install -f -y && \  
-      sed -i 's/systemctl/#systemctl/g' /var/lib/dpkg/info/xrt.postinst && \  
-      rm -f /tmp/${PACKAGE_FILE} && \  
-      dpkg -l | grep xrt;  
+      dpkg -i /tmp/${PACKAGE_FILE} || apt-get install -f -y && \    
+      rm -f /tmp/${PACKAGE_FILE} && \    
+      dpkg -l | grep xrt'; \   
     else \  
       echo "Unsupported base image: ${BASE_IMAGE}"; \  
       exit 1; \  
