@@ -121,24 +121,42 @@ jobs:
       #     ls -al        
       #   shell: bash        
     
-      - name: Find and copy packages    
-        run: |    
-          # cd ${{ env.PATH_DIR }}/artifact    
-          # echo "Listing all files in artifact directory:"    
-          cd ${{ secrets.NPATH }}/xrt/test_pipeline/builds/2021.1/860/staging/artifact
-          ls -al    
-          for package_file in *-xrt.rpm *-xrt.deb; do   
-            echo "Found package: $package_file"    
-            cp $package_file ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/    
-          done    
-        shell: bash    
+      - name: Find and copy packages      
+        run: |      
+          cd ${{ secrets.NPATH }}/xrt/test_pipeline/builds/2021.1/859/staging/artifact  
+          ls -al     
+          rm -rf xrt_202110.2.11.859_amzn2-x86_64-xrt.rpm  
+          for package_file in *-xrt.rpm *-xrt.deb; do     
+            echo "Found package: $package_file"      
+            cp $package_file ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/      
+          done      
     
-      - name: List contents of Dockerfile directory    
-        run: |    
-          echo "Contents of Dockerfile directory:"    
-          ls -al ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile    
-        shell: bash  
-
+          # Copy XCR and XRM packages using APP_CONFIG4  
+          base_path="${{ secrets.APP_CONFIG4 }}"  
+          if [[ "$package_file" == *"18.04"* ]]; then  
+            cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_18.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+            cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_18.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          elif [[ "$package_file" == *"20.04"* ]]; then  
+            cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_20.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+            cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_20.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          elif [[ "$package_file" == *"22.04"* ]]; then  
+            cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_22.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+            cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_22.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          elif [[ "$package_file" == *"8.1.1911"* ]]; then  
+            cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_7.9.2009-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+            cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_7.8.2003-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          elif [[ "$package_file" == *"amzn2"* ]]; then  
+            cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_2-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+            cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_2-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          fi  
+        shell: bash      
+        
+      - name: List contents of Dockerfile directory      
+        run: |      
+          echo "Contents of Dockerfile directory:"      
+          ls -al ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile      
+        shell: bash       
+        
       - name: Build Docker images          
         run: |          
           set -e  # Exit on any error        
@@ -155,19 +173,19 @@ jobs:
                 
               if [[ "$package_file" == *"18.04"* ]]; then            
                   base_image="ubuntu:18.04"            
-                  install_commands='apt-get update && apt-get install -y wget && dpkg -i /tmp/${PACKAGE_FILE} || apt-get install -f -y && rm -f /tmp/${PACKAGE_FILE} && dpkg -l | grep xrt'  
+                  install_commands='apt-get update && apt-get install -y wget && dpkg -i /tmp/${PACKAGE_FILE} /tmp/xcr_202220.1.1.27_18.04-x86_64.deb /tmp/xrm_202220.1.5.103_18.04-x86_64.deb || apt-get install -f -y && rm -f /tmp/${PACKAGE_FILE} /tmp/xcr_202220.1.1.27_18.04-x86_64.deb /tmp/xrm_202220.1.5.103_18.04-x86_64.deb && dpkg -l | grep xrt'  
               elif [[ "$package_file" == *"20.04"* ]]; then            
                   base_image="ubuntu:20.04"            
-                  install_commands='apt-get update && apt-get install -y wget && dpkg -i /tmp/${PACKAGE_FILE} || apt-get install -f -y && rm -f /tmp/${PACKAGE_FILE} && dpkg -l | grep xrt'  
+                  install_commands='apt-get update && apt-get install -y wget && dpkg -i /tmp/${PACKAGE_FILE} /tmp/xcr_202220.1.1.27_20.04-x86_64.deb /tmp/xrm_202220.1.5.103_20.04-x86_64.deb || apt-get install -f -y && rm -f /tmp/${PACKAGE_FILE} /tmp/xcr_202220.1.1.27_20.04-x86_64.deb /tmp/xrm_202220.1.5.103_20.04-x86_64.deb && dpkg -l | grep xrt'  
               elif [[ "$package_file" == *"22.04"* ]]; then            
                   base_image="ubuntu:22.04"            
-                  install_commands='apt-get update && apt-get install -y wget && dpkg -i /tmp/${PACKAGE_FILE} || apt-get install -f -y && rm -f /tmp/${PACKAGE_FILE} && dpkg -l | grep xrt'  
+                  install_commands='apt-get update && apt-get install -y wget && dpkg -i /tmp/${PACKAGE_FILE} /tmp/xcr_202220.1.1.27_22.04-x86_64.deb /tmp/xrm_202220.1.5.103_22.04-x86_64.deb || apt-get install -f -y && rm -f /tmp/${PACKAGE_FILE} /tmp/xcr_202220.1.1.27_22.04-x86_64.deb /tmp/xrm_202220.1.5.103_22.04-x86_64.deb && dpkg -l | grep xrt'  
               elif [[ "$package_file" == *"8.1.1911"* ]]; then            
                   base_image="centos:8"            
-                  install_commands='sed -i "s|^mirrorlist=|#mirrorlist=|g" /etc/yum.repos.d/CentOS-* && sed -i "s|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-* && yum install -y epel-release && yum install -y dnf-plugins-core wget && yum config-manager --set-enabled powertools && yum clean all && yum install -y /tmp/${PACKAGE_FILE} && rm -f /tmp/${PACKAGE_FILE}'  
+                  install_commands='sed -i "s|^mirrorlist=|#mirrorlist=|g" /etc/yum.repos.d/CentOS-* && sed -i "s|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-* && yum install -y epel-release && yum install -y dnf-plugins-core wget && yum config-manager --set-enabled powertools && yum clean all && yum install -y /tmp/${PACKAGE_FILE} /tmp/xcr_202220.1.1.27_7.9.2009-x86_64.rpm /tmp/xrm_202220.1.5.103_7.8.2003-x86_64.rpm && rm -f /tmp/${PACKAGE_FILE} /tmp/xcr_202220.1.1.27_7.9.2009-x86_64.rpm /tmp/xrm_202220.1.5.103_7.8.2003-x86_64.rpm'  
               elif [[ "$package_file" == *"amzn2"* ]]; then            
                   base_image="amazonlinux:2"       
-                  install_commands='yum update -y && yum install -y wget gnupg2 && amazon-linux-extras install epel -y && yum install -y tar && yum install -y /tmp/${PACKAGE_FILE} && rm -f /tmp/${PACKAGE_FILE}'  
+                  install_commands='yum update -y && yum install -y wget gnupg2 && amazon-linux-extras install epel -y && yum install -y ocl-icd ocl-icd-devel && yum install -y tar && yum install -y /tmp/${PACKAGE_FILE} /tmp/xcr_202220.1.1.27_2-x86_64.rpm /tmp/xrm_202220.1.5.103_2-x86_64.rpm && rm -f /tmp/${PACKAGE_FILE} /tmp/xcr_202220.1.1.27_2-x86_64.rpm /tmp/xrm_202220.1.5.103_2-x86_64.rpm'  
               else            
                   echo "No matching base image found for $package_file"            
                   exit 1            
@@ -190,7 +208,7 @@ jobs:
             docker tag "xrt_image:$image_tag" "registry.amd.com/buildops/xrt_image:$image_tag"          
             docker push "registry.amd.com/buildops/xrt_image:$image_tag"          
           done          
-        shell: bash 
+        shell: bash  
 
 
 
