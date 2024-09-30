@@ -131,39 +131,12 @@ jobs:
             cp $package_file ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/      
           done      
     
-          # Copy XCR and XRM packages using APP_CONFIG4  
+
+          # Copy all XCR and XRM packages  
           base_path="${{ secrets.APP_CONFIG4 }}"  
-          if [[ "$package_file" == *"18.04"* ]]; then  
-            echo "Copying XCR and XRM for Ubuntu 18.04"  
-            cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_18.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-            echo "Copied xcr_202220.1.1.27_18.04-x86_64.deb"  
-            cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_18.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-            echo "Copied xrm_202220.1.5.103_18.04-x86_64.deb"  
-          elif [[ "$package_file" == *"20.04"* ]]; then  
-            echo "Copying XCR and XRM for Ubuntu 20.04"  
-            cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_20.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-            echo "Copied xcr_202220.1.1.27_20.04-x86_64.deb"  
-            cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_20.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-            echo "Copied xrm_202220.1.5.103_20.04-x86_64.deb"  
-          elif [[ "$package_file" == *"22.04"* ]]; then  
-            echo "Copying XCR and XRM for Ubuntu 22.04"  
-            cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_22.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-            echo "Copied xcr_202220.1.1.27_22.04-x86_64.deb"  
-            cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_22.04-x86_64.deb ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-            echo "Copied xrm_202220.1.5.103_22.04-x86_64.deb"  
-          elif [[ "$package_file" == *"8.1.1911"* ]]; then  
-            echo "Copying XCR and XRM for CentOS 8"  
-            cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_7.9.2009-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-            echo "Copied xcr_202220.1.1.27_7.9.2009-x86_64.rpm"  
-            cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_7.8.2003-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-            echo "Copied xrm_202220.1.5.103_7.8.2003-x86_64.rpm"  
-          elif [[ "$package_file" == *"amzn2"* ]]; then  
-            echo "Copying XCR and XRM for Amazon Linux 2"  
-            cp $base_path/XCR/master/202220.1.1.27/packages/xcr_202220.1.1.27_2-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-            echo "Copied xcr_202220.1.1.27_2-x86_64.rpm"  
-            cp $base_path/XRM/master/202220.1.5.103/packages/xrm_202220.1.5.103_2-x86_64.rpm ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
-            echo "Copied xrm_202220.1.5.103_2-x86_64.rpm"  
-          fi  
+          cp $base_path/XCR/master/202220.1.1.27/packages/* ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          cp $base_path/XRM/master/202220.1.5.103/packages/* ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}/Dockerfile/  
+          echo "Copied all XCR and XRM packages"  
         shell: bash       
         
       - name: List contents of Dockerfile directory      
