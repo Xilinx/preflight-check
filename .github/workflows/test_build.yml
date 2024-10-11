@@ -392,7 +392,7 @@ jobs:
   #         # echo "test summary URL: ${{ steps.summary.outputs.url }}" >> $GITHUB_STEP_SUMMARY    
   #         echo '### [tests logs summary](${{ steps.summary.outputs.url }})' >> $GITHUB_STEP_SUMMARY 
   setenv-download:    
-    # needs: test-summary    
+    needs: package-download
     runs-on: [self-hosted, Ubuntu-22.04]    
     steps:
       - name: Set env variables    
