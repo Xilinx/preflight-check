@@ -1,4 +1,4 @@
-name: XRT CI XTI
+name: XRT CI 2025.1
 env:  
   RELEASE: '2025.1'  
   PIPELINE: 'xrt' 
