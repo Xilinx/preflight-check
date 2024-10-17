@@ -478,7 +478,7 @@ jobs:
 
   Release_to_all_sites:      
     needs: Release_to_xco  
-    runs-on: [xrt, trx]     
+    runs-on: [self-hosted, Ubuntu-22.04]
     strategy:        
       matrix:        
         site: ['xsj', 'xir', 'xhd', 'xdc'] 
