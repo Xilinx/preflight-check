@@ -8,48 +8,43 @@ on:
   workflow_dispatch:
   
 jobs:
+
   build:
+
     strategy:      
       matrix:      
         include:      
           # - os: centos78      
-          #   packageType: rpm
-          #   os_ver: centos_7.8      
+          #   packageType: rpm      
           # - os: centos8      
-          #   packageType: rpm
-          #   os_ver: centos_8.1      
+          #   packageType: rpm      
           # - os: rhel9      
-          #   packageType: rpm
-          #   os_ver: rhel_9.1      
-          - os: rhel8.10      
-            packageType: rpm
-            os_ver: rhel_8.10  
+          #   packageType: rpm      
           # - os: ubuntu2004      
-          #   packageType: deb
-          #   os_ver: ubuntu_20.04      
+          #   packageType: deb      
           # - os: hip      
-          #   packageType: deb
-          #   os_ver: ubuntu_22.04    
+          #   packageType: deb  
           # - os: ubuntu2404      
-          #   packageType: deb
-          #   os_ver: ubuntu_24.04   
+          #   packageType: deb     
+            - os: rhel8.10      
+              packageType: rpm
+
         
     runs-on: [self-hosted, Ubuntu-22.04]
     steps:  
       - name: Set env variables    
         run: |    
           echo "Setting environment variables..."      
-          # echo "XRT_VERSION_PATCH=${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
-          echo "XRT_VERSION_PATCH=$(($GITHUB_RUN_NUMBER))" >> $GITHUB_ENV    
+          echo "XRT_VERSION_PATCH=${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV    
           echo "PATH=/usr/bin:$PATH" >> $GITHUB_ENV     
     
       - name: Checkout PR   
         uses: actions/checkout@v3 
         with: 
-          # repository: "${{ github.event.pull_request.head.repo.full_name }}"
-          # ref: "${{ github.event.pull_request.head.ref }}"
+          repository: "${{ github.event.pull_request.head.repo.full_name }}"
+          ref: "${{ github.event.pull_request.head.ref }}"
           fetch-depth: 0
-          path: ${{ github.workspace }}/${{ env.XRT_VERSION_PATCH }}  
+          path: ${{ github.workspace }}/${{ github.run_number }}  
           submodules: recursive   
 
       - name: Checkout private repository      
@@ -66,10 +61,9 @@ jobs:
         with:     
           pipeline: ${{ env.PIPELINE }} 
           osVersion: ${{ matrix.os }}  
-          packageType: ${{ matrix.packageType }}
-          os_ver: ${{ matrix.os_ver }}  
+          packageType: ${{ matrix.packageType }}  
           workspace: ${{ github.workspace }}
-          buildNumber: ${{ env.XRT_VERSION_PATCH }}     
+          buildNumber: ${{ github.run_number }}     
           accessToken: ${{ secrets.ACCESS_TOKEN }}
           github-server-url: ${{ secrets.SERVER_URL }}
           appConfig: ${{ secrets.APP_CONFIG }} 
