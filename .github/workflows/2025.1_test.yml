@@ -43,7 +43,9 @@ jobs:
            - os: ubuntu2004      
              packageType: deb      
            - os: ubuntu2204      
-             packageType: deb   
+             packageType: deb
+           - os: npu      
+             packageType: deb 
         
     runs-on: [self-hosted, Ubuntu-22.04]
     # runs-on: [apu]
@@ -72,7 +74,7 @@ jobs:
           github-server-url: ${{ secrets.SERVER_URL }}      
           token: ${{ secrets.ACCESS_TOKEN }}      
           path: composite-workflows 
-          ref: main
+          ref: npu-test
        
       - name: XRT build     
         uses: ./composite-workflows/build
