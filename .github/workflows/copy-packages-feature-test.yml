@@ -45,7 +45,7 @@ jobs:
     runs-on: [self-hosted, Ubuntu-22.04]
     # runs-on: [apu]
     steps:  
-      - name: Set env variables    
+      - name: Set env variables.    
         run: |    
           echo "Setting environment variables..."      
           echo "XRT_VERSION_PATCH=${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV    
@@ -386,7 +386,7 @@ jobs:
           path: composite-workflows  
           ref: cleanup-patch
        
-      - name: Use composite action for pcie-hw       
+      - name: Use composite action for pcie-hw.       
         uses: ./composite-workflows/emulation
         with:  
           organization: ${{ github.repository }}
