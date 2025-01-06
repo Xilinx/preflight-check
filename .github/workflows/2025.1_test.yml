@@ -33,16 +33,14 @@ jobs:
     ## needs: authorize  
     strategy:      
       matrix:      
-        include:      
-           - os: centos78      
-             packageType: rpm      
+        include:            
            - os: centos8      
              packageType: rpm      
            - os: rhel9      
              packageType: rpm      
            - os: ubuntu2004      
              packageType: deb      
-           - os: ubuntu2204      
+           - os: hip      
              packageType: deb
            - os: npu      
              packageType: deb
