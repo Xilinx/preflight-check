@@ -74,7 +74,7 @@ jobs:
           github-server-url: ${{ secrets.SERVER_URL }}      
           token: ${{ secrets.ACCESS_TOKEN }}      
           path: composite-workflows 
-          ref: xti
+          ref: main
        
       - name: XRT build     
         uses: ./composite-workflows/build
@@ -136,7 +136,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           github-server-url: ${{ secrets.SERVER_URL }}    
           path: composite-workflows 
-          ref: 'xti'
+          ref: 'main'
     
       - name: Use composite action package download     
         uses: ./composite-workflows/package-download   
