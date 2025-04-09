@@ -1,6 +1,6 @@
 name: XRT CI XTI
 env:  
-  RELEASE: '2024.2'  
+  RELEASE: '2025.2'  
   PIPELINE: 'xrt' 
   ENV: 'test' 
 
@@ -191,7 +191,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           github-server-url: ${{ secrets.SERVER_URL }}      
           path: composite-workflows   
-          ref: xti
+          ref: main
        
       - name: Use composite action for pcie-hw       
         uses: ./composite-workflows/pcie-hw  
@@ -266,7 +266,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           github-server-url: ${{ secrets.SERVER_URL }}       
           path: composite-workflows   
-          ref: xti
+          ref: main
        
       - name: Use composite action for pcie-hw       
         uses: ./composite-workflows/emulation
@@ -341,7 +341,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           github-server-url: ${{ secrets.SERVER_URL }}       
           path: composite-workflows  
-          ref: xti
+          ref: main
        
       - name: Use composite action for pcie-hw       
         uses: ./composite-workflows/emulation
