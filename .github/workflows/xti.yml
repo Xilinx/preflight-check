@@ -401,7 +401,7 @@ jobs:
       - name: Cancel Workflow Run  
         if: steps.check_status.outputs.status == 'in_progress'  
         run: |  
-          echo "Cancelling Workflow Run..."  
+          echo "Cancelling Workflow Run...."  
           curl \  
             -X POST \  
             -H "Authorization: Bearer ${{ secrets.CI_CLOUD_TOKEN }}" \  
