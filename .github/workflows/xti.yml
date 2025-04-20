@@ -50,7 +50,7 @@ jobs:
     steps:  
       - name: Set env variables    
         run: |    
-          echo "Setting environment variables..."      
+          echo "Setting environment variables...."      
           echo "XRT_VERSION_PATCH=${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV    
           echo "PATH=/usr/bin:$PATH" >> $GITHUB_ENV     
     
