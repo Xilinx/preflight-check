@@ -26,7 +26,7 @@ jobs:
           github-server-url: ${{ secrets.SERVER_URL }}      
           token: ${{ secrets.ACCESS_TOKEN }}      
           path: composite-workflows
-          ref: external-collab   
+          ref: collab   
 
       - name: authorize
         uses: ./composite-workflows/authorize
