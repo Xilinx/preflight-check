@@ -1,4 +1,4 @@
-name: XRT CI Pr Comment 
+name: XRT CI Authorize App 
 
 env:  
   RELEASE: '2024.1'  
@@ -26,15 +26,17 @@ jobs:
           github-server-url: ${{ secrets.SERVER_URL }}      
           token: ${{ secrets.ACCESS_TOKEN }}      
           path: composite-workflows
-          ref: collab   
+          ref: external-collab   
 
       - name: authorize
         uses: ./composite-workflows/authorize
         with:
-          accessToken: ${{ secrets.CI_CLOUD_TOKEN }}
+          # accessToken: ${{ secrets.CI_CLOUD_TOKEN }}
           pullRequestUser: ${{ github.actor }}  
           githubEventType: ${{ github.event.action }}
           labelName: ${{ github.event.label.name }} 
+          app-id: ${{ secrets.XRT_APP_ID }}
+          app-private-key: ${{ secrets.XRT_APP_PRIVATE_KEY }}
 
   build:
     needs: authorize  
