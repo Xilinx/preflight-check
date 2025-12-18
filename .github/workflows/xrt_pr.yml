@@ -16,6 +16,7 @@ concurrency:
   
 jobs:
   authorize:
+    if: github.event_name == 'pull_request_target'
     runs-on: [self-hosted, Ubuntu-22.04]
     steps:
       - name: Checkout private repository      
@@ -35,7 +36,8 @@ jobs:
           pullRequestUser: ${{ github.event.pull_request.user.login }}
 
   windows-build:
-    needs: authorize
+    needs: [authorize]
+    if: always() && (needs.authorize.result == 'success' || needs.authorize.result == 'skipped')
     runs-on: Windows
     steps:
       - name: Checkout XRT repository   
