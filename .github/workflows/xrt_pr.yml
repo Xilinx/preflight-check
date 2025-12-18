@@ -15,8 +15,28 @@ concurrency:
   cancel-in-progress: true 
   
 jobs:
+  authorize:
+    runs-on: [self-hosted, Ubuntu-22.04]
+    steps:
+      - name: Checkout private repository      
+        uses: actions/checkout@v4   
+        with:      
+          repository: actions-int/composite-workflows
+          github-server-url: ${{ secrets.SERVER_URL }}      
+          token: ${{ secrets.ACCESS_TOKEN }}      
+          path: composite-workflows
+          ref: main
+
+      - name: authorize
+        uses: ./composite-workflows/authorize
+        with:
+          app-id: ${{ secrets.XRT_APP_ID }}
+          app-private-key: ${{ secrets.XRT_APP_PRIVATE_KEY }}
+          pullRequestUser: ${{ github.event.pull_request.user.login }}
+
   windows-build:
-    runs-on: [Windows-preflight]
+    needs: authorize
+    runs-on: Windows
     steps:
       - name: Checkout XRT repository   
         uses: actions/checkout@v4 
@@ -26,9 +46,7 @@ jobs:
           fetch-depth: 0
           path: ${{ github.workspace }}/${{ github.run_number }}  
           submodules: recursive
-          persist-credentials: false 
-          token: ${{ secrets.ACCESS_TOKEN }}
-          github-server-url: ${{ secrets.SERVER_URL }}
+          persist-credentials: false
             
       - name: Checkout private repository      
         uses: actions/checkout@v3   
@@ -48,3 +66,5 @@ jobs:
           accessToken: ${{ secrets.ACCESS_TOKEN }} 
           workspaceg: ${{ github.workspace }}
           github-server-url: ${{ secrets.SERVER_URL }}
+          build-cmd: "build22.bat -opt -hip"
+          vs-version: "2022"
