@@ -38,7 +38,7 @@ jobs:
   windows-build:
     needs: [authorize]
     if: always() && (needs.authorize.result == 'success' || needs.authorize.result == 'skipped')
-    runs-on: Windows
+    runs-on: [self-hosted, winp]
     steps:
       - name: Checkout XRT repository   
         uses: actions/checkout@v4 
