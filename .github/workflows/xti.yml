@@ -1,6 +1,6 @@
 name: XRT CI XTI
 env:  
-  RELEASE: '2025.2'  
+  RELEASE: '2026.2'  
   PIPELINE: 'xrt' 
   ENV: 'test' 
 
@@ -35,15 +35,11 @@ jobs:
     ## needs: authorize  
     strategy:      
       matrix:      
-        include:      
-           - os: centos78      
-             packageType: rpm      
+        include:        
            - os: centos8      
              packageType: rpm      
            - os: rhel9      
-             packageType: rpm      
-           - os: ubuntu2004      
-             packageType: deb      
+             packageType: rpm         
         
     runs-on: [self-hosted, Ubuntu-22.04]
     # runs-on: [apu]
@@ -72,7 +68,7 @@ jobs:
           github-server-url: ${{ secrets.SERVER_URL }}      
           token: ${{ secrets.ACCESS_TOKEN }}      
           path: composite-workflows 
-          ref: xti
+          ref: main
        
       - name: XRT build     
         uses: ./composite-workflows/build
