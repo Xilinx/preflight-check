@@ -165,7 +165,7 @@ jobs:
         id: extract      
         with:      
           release: ${{ env.RELEASE }}
-          env: ${{ env.ENV }}
+          env: "prod"
           pipeline: ${{ env.PIPELINE }} 
           boardType: "pcie"
           boardMode: "hw"       
