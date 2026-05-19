@@ -196,7 +196,7 @@ jobs:
           runNumber: ${{ github.run_number }}  
           buildNumber: ${{ github.run_number }}_${{ github.run_attempt }} 
           release: ${{ env.RELEASE }}
-          env: ${{ env.ENV }}  
+          env: "prod"  
           pipeline: ${{ env.PIPELINE }} 
           boardType: "pcie"  
           boardState: "gating"  
